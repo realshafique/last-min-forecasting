@@ -107,7 +107,7 @@ Make sure you have installed:
 
 1. Clone the Repository
 
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <realshafique/last-min-forecasting: AI-powered energy demand forecasting using LSTM, FastAPI and React. https://share.google/RMymv2Bbe3AbLVSkf>
 cd Last-Min-Forecasting
 
 2. Create a Virtual Environment
