@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from predictor import predict_energy
+from backend.predictor import predict_energy
 
 
 app = FastAPI(
