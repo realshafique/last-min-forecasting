@@ -93,3 +93,120 @@ The frontend communicates with the FastAPI backend through the `/predict` endpoi
 - The system is designed as a short-term forecasting prototype.
 - Smart meter/IoT integration is not currently implemented.
 
+🚀 Installation & Setup
+
+Follow these steps to run Last Min Forecasting locally.
+
+Prerequisites
+
+Make sure you have installed:
+
+- Python 3.10+
+- Git
+- pip
+
+1. Clone the Repository
+
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+cd Last-Min-Forecasting
+
+2. Create a Virtual Environment
+
+python -m venv venv
+
+Activate it:
+
+Windows:
+
+venv\Scripts\activate
+
+macOS/Linux:
+
+source venv/bin/activate
+
+3. Install Dependencies
+
+pip install -r requirements.txt
+
+4. Prepare the Dataset
+
+Place the required dataset in the project's data directory:
+
+data/
+└── energy_consumption.csv
+
+Make sure the dataset follows the format expected by the forecasting pipeline.
+
+5. Run the Model
+
+If the project contains a training script:
+
+python train.py
+
+This will train the LSTM model using the available energy-consumption data.
+
+6. Start the Backend
+
+If FastAPI is used:
+
+uvicorn main:app --reload
+
+The API will be available at:
+
+http://127.0.0.1:8000
+
+API documentation:
+
+http://127.0.0.1:8000/docs
+
+7. Start the Frontend
+
+If Streamlit is used:
+
+streamlit run app.py
+
+The forecasting dashboard will open in your browser.
+
+📁 Project Structure
+
+Last-Min-Forecasting/
+│
+├── data/
+├── models/
+├── notebooks/
+├── backend/
+├── frontend/
+├── train.py
+├── requirements.txt
+├── .gitignore
+└── README.md
+
+🧠 Model
+
+The project uses an LSTM (Long Short-Term Memory) neural network for time-series energy consumption forecasting.
+
+The general workflow is:
+
+Energy Data
+     ↓
+Data Preprocessing
+     ↓
+Time-Series Sequences
+     ↓
+LSTM Model
+     ↓
+Prediction
+     ↓
+Forecasting Dashboard/API
+
+🛠️ Tech Stack
+
+- Python
+- TensorFlow / Keras
+- LSTM
+- Pandas
+- NumPy
+- FastAPI
+- Streamlit
+- Matplotlib
+
