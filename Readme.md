@@ -97,110 +97,75 @@ The frontend communicates with the FastAPI backend through the `/predict` endpoi
 
 Follow these steps to run Last Min Forecasting locally.
 
-Prerequisites
+## Prerequisites
 
-Make sure you have installed:
+Make sure you have the following installed:
 
 - Python 3.10+
 - Git
 - pip
-### 1. Clone the Repository
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/realshafique/last-min-forecasting.git
 cd last-min-forecasting
 ```
 
-### 2. Create a Virtual Environment
+## 2. Create a Virtual Environment
 
+```bash
 python -m venv venv
+```
 
-Activate it:
+## 3. Activate the Virtual Environment
 
-Windows:
+### Windows
 
+```bash
 venv\Scripts\activate
+```
 
-macOS/Linux:
+### macOS/Linux
 
+```bash
 source venv/bin/activate
+```
 
-### 3. Install Dependencies
+## 4. Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-### 4. Prepare the Dataset
+## 5. Prepare the Dataset
 
-Place the required dataset in the project's data directory:
+Place the required dataset in the project's `data` directory.
 
+```text
 data/
 └── energy_consumption.csv
+```
 
-Make sure the dataset follows the format expected by the forecasting pipeline.
+## 6. Train the Model
 
-### 5. Run the Model
+If the project contains the training script:
 
-If the project contains a training script:
-
+```bash
 python train.py
+```
 
-This will train the LSTM model using the available energy-consumption data.
+## 7. Run the Application
 
-₹## 6. Start the Backend
+If you are using Streamlit:
 
-If FastAPI is used:
-
-uvicorn main:app --reload
-
-The API will be available at:
-
-http://127.0.0.1:8000
-
-API documentation:
-
-http://127.0.0.1:8000/docs
-
-### 7. Start the Frontend
-
-If Streamlit is used:
-
+```bash
 streamlit run app.py
+```
 
-The forecasting dashboard will open in your browser.
+The application will open in your browser.
 
-📁 Project Structure
-
-Last-Min-Forecasting/
-│
-├── data/
-├── models/
-├── notebooks/
-├── backend/
-├── frontend/
-├── train.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-
-🧠 Model
-
-The project uses an LSTM (Long Short-Term Memory) neural network for time-series energy consumption forecasting.
-
-The general workflow is:
-
-Energy Data
-     ↓
-Data Preprocessing
-     ↓
-Time-Series Sequences
-     ↓
-LSTM Model
-     ↓
-Prediction
-     ↓
-Forecasting Dashboard/API
-
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 - Python
 - TensorFlow / Keras
@@ -209,5 +174,3 @@ Forecasting Dashboard/API
 - NumPy
 - FastAPI
 - Streamlit
-- Matplotlib
-
