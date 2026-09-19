@@ -104,14 +104,14 @@ Make sure you have installed:
 - Python 3.10+
 - Git
 - pip
-### 1. Clone the Repository
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/realshafique/last-min-forecasting.git
 cd last-min-forecasting
 ```
 
-### 2. Create a Virtual Environment
+## 2. Create a Virtual Environment
 
 python -m venv venv
 
@@ -125,11 +125,11 @@ macOS/Linux:
 
 source venv/bin/activate
 
-### 3. Install Dependencies
+## 3. Install Dependencies
 
 pip install -r requirements.txt
 
-### 4. Prepare the Dataset
+## 4. Prepare the Dataset
 
 Place the required dataset in the project's data directory:
 
@@ -138,7 +138,7 @@ data/
 
 Make sure the dataset follows the format expected by the forecasting pipeline.
 
-#### 5. Run the Model
+## 5. Run the Model
 
 If the project contains a training script:
 
