@@ -8,7 +8,7 @@
 An end-to-end AI application that uses an LSTM deep learning model to forecast the next hour's electricity consumption from the previous 24 hours of energy usage.
 
 **🚀 Live Demo:**  
-https://last-min-forecasting-co6l5ny6o-shafiqurrahman.vercel.app/
+https://last-min-forecasting.vercel.app/
 
 ## 🖥️ Project Preview
 
