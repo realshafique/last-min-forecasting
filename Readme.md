@@ -93,7 +93,7 @@ The frontend communicates with the FastAPI backend through the `/predict` endpoi
 - The system is designed as a short-term forecasting prototype.
 - Smart meter/IoT integration is not currently implemented.
 
-🚀 Installation & Setup
+##🚀 Installation & Setup
 
 Follow these steps to run Last Min Forecasting locally.
 
