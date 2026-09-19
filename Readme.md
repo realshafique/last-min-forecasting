@@ -104,11 +104,12 @@ Make sure you have installed:
 - Python 3.10+
 - Git
 - pip
+### 1. Clone the Repository
 
-1. Clone the Repository
-
-git clone <realshafique/last-min-forecasting: AI-powered energy demand forecasting using LSTM, FastAPI and React. https://share.google/RMymv2Bbe3AbLVSkf>
-cd Last-Min-Forecasting
+```bash
+git clone https://github.com/realshafique/last-min-forecasting.git
+cd last-min-forecasting
+```
 
 2. Create a Virtual Environment
 
