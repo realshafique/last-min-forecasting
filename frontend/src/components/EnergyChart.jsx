@@ -6,84 +6,145 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend
 } from "recharts";
 
+function EnergyChart({ values, prediction }) {
+  const data = values.map((value, index) => ({
+    hour: `H${index + 1}`,
+    energy: Number(value),
+  }));
 
-const data = [
-  { time: "00:00", actual: 1.82, forecast: null },
-  { time: "02:00", actual: 1.65, forecast: null },
-  { time: "04:00", actual: 1.54, forecast: null },
-  { time: "06:00", actual: 1.91, forecast: null },
-  { time: "08:00", actual: 2.42, forecast: null },
-  { time: "10:00", actual: 2.31, forecast: null },
-  { time: "12:00", actual: 2.56, forecast: null },
-  { time: "14:00", actual: 2.48, forecast: null },
-  { time: "16:00", actual: 2.62, forecast: null },
-
-  { time: "18:00", actual: 2.71, forecast: 2.71 },
-  { time: "20:00", actual: null, forecast: 2.84 },
-  { time: "22:00", actual: null, forecast: 2.58 }
-];
-
-
-function EnergyChart() {
+  if (prediction !== null) {
+    data.push({
+      hour: "Next",
+      energy: Number(prediction),
+      predicted: true,
+    });
+  }
 
   return (
+    <div className="chart-card">
+      <div className="chart-header">
+        <div>
+          <h2>Energy Consumption</h2>
+          <p>
+            Previous 24 hours and predicted next hour
+          </p>
+        </div>
 
-    <div className="chart-container">
+        <div className="chart-legend">
+          <span>
+            <i className="actual-dot"></i>
+            Actual
+          </span>
 
-      <ResponsiveContainer
-        width="100%"
-        height={400}
-      >
+          <span>
+            <i className="prediction-dot"></i>
+            Prediction
+          </span>
+        </div>
+      </div>
 
-        <LineChart data={data}>
+      <div className="chart">
+        {values.length === 0 ? (
+          <div className="empty-chart">
+            Enter your 24 hourly values to see the graph.
+          </div>
+        ) : (
+          <ResponsiveContainer
+            width="100%"
+            height={350}
+          >
+            <LineChart
+              data={data}
+              margin={{
+                top: 10,
+                right: 20,
+                left: 0,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#242424"
+              />
 
-          <CartesianGrid
-            strokeDasharray="3 3"
-            vertical={false}
-          />
+              <XAxis
+                dataKey="hour"
+                stroke="#666"
+                tick={{
+                  fill: "#777",
+                  fontSize: 11,
+                }}
+              />
 
-          <XAxis
-            dataKey="time"
-          />
+              <YAxis
+                stroke="#666"
+                tick={{
+                  fill: "#777",
+                  fontSize: 11,
+                }}
+                label={{
+                  value: "kW",
+                  angle: -90,
+                  position: "insideLeft",
+                  fill: "#777",
+                }}
+              />
 
-          <YAxis
-            label={{
-              value: "kW",
-              angle: -90,
-              position: "insideLeft"
-            }}
-          />
+              <Tooltip
+                contentStyle={{
+                  background: "#111",
+                  border: "1px solid #333",
+                  borderRadius: "10px",
+                  color: "#fff",
+                }}
+                formatter={(value) => [
+                  `${Number(value).toFixed(2)} kW`,
+                  "Energy",
+                ]}
+              />
 
-          <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="energy"
+                stroke="#ffffff"
+                strokeWidth={3}
+                dot={(props) => {
+                  const {
+                    cx,
+                    cy,
+                    payload,
+                  } = props;
 
-          <Legend />
+                  if (payload.predicted) {
+                    return (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={6}
+                        fill="#ffffff"
+                        stroke="#888"
+                        strokeWidth={3}
+                      />
+                    );
+                  }
 
-          <Line
-            type="monotone"
-            dataKey="actual"
-            name="Actual"
-            strokeWidth={3}
-            dot={false}
-          />
-
-          <Line
-            type="monotone"
-            dataKey="forecast"
-            name="Forecast"
-            strokeWidth={3}
-            strokeDasharray="8 5"
-            dot={false}
-          />
-
-        </LineChart>
-
-      </ResponsiveContainer>
-
+                  return (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={3}
+                      fill="#ffffff"
+                    />
+                  );
+                }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+      </div>
     </div>
-
   );
 }
 

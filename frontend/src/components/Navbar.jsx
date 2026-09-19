@@ -1,40 +1,14 @@
-import { motion } from "framer-motion";
-
 function Navbar() {
   return (
-    <motion.nav
-      className="navbar"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-
+    <nav className="navbar">
       <div className="logo">
-        <div className="logo-icon">⚡</div>
-
-        <div>
-          <h3>Last Min</h3>
-          <span>Forecasting</span>
-        </div>
+        ⚡ Last Min Forecasting
       </div>
 
-
-      <div className="nav-links">
-
-        <a href="#dashboard">Dashboard</a>
-
-        <a href="#forecast">Forecast</a>
-
-        <a href="#model">Model</a>
-
+      <div className="nav-text">
+        LSTM Energy Forecast
       </div>
-
-
-      <button className="refresh-btn">
-        ↻ Refresh
-      </button>
-
-    </motion.nav>
+    </nav>
   );
 }
 

@@ -1,10 +1,107 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
-import StatCard from "./components/StatCard";
-import EnergyChart from "./components/EnergyChart";
 import ForecastCard from "./components/ForecastCard";
+import EnergyChart from "./components/EnergyChart";
+import "./index.css";
 
 function App() {
+  const [energyValues, setEnergyValues] = useState(
+    Array(24).fill("")
+  );
+
+  const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleInputChange = (index, value) => {
+    const updatedValues = [...energyValues];
+
+    updatedValues[index] = value;
+
+    setEnergyValues(updatedValues);
+
+    setPrediction(null);
+    setError("");
+  };
+
+  const handlePredict = async () => {
+    setError("");
+    setPrediction(null);
+
+    if (energyValues.some((value) => value === "")) {
+      setError(
+        "Please enter all 24 hourly energy values."
+      );
+
+      return;
+    }
+
+    const values = energyValues.map(Number);
+
+    if (
+      values.some(
+        (value) =>
+          isNaN(value) || value < 0
+      )
+    ) {
+      setError(
+        "Please enter valid positive energy values."
+      );
+
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/predict",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            energy_values: values,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.detail ||
+            "Prediction failed."
+        );
+      }
+
+      setPrediction(
+        data.predicted_energy
+      );
+
+    } catch (err) {
+      setError(
+        err.message ||
+          "Unable to connect to backend."
+      );
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClear = () => {
+    setEnergyValues(
+      Array(24).fill("")
+    );
+
+    setPrediction(null);
+    setError("");
+  };
+
   return (
     <div className="app">
 
@@ -12,146 +109,284 @@ function App() {
 
       <main className="dashboard">
 
-        {/* Hero Section */}
-        <motion.section
-          className="hero"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div>
-            <p className="eyebrow">AI ENERGY FORECASTING</p>
+        {/* HERO */}
 
-            <h1>
-              Last Min
-              <span> Forecasting</span>
-            </h1>
+        <section className="hero">
 
-            <p className="hero-description">
-              Predicting near-future household energy consumption
-              using an LSTM deep learning model.
-            </p>
+          <div className="badge">
+            AI POWERED ENERGY FORECASTING
           </div>
 
-          <div className="status">
-            <span className="status-dot"></span>
-            Model Online
+          <h1>
+            Last Min <span>Forecasting</span>
+          </h1>
+
+          <p>
+            Predict your next hour's electricity
+            consumption using an LSTM
+            deep learning model.
+          </p>
+
+        </section>
+
+
+        {/* INPUT */}
+
+        <section className="input-card">
+
+          <div className="section-title">
+
+            <div>
+
+              <h2>
+                Energy Consumption
+              </h2>
+
+              <p>
+                Enter your electricity
+                consumption for the previous
+                24 hours in kW.
+              </p>
+
+            </div>
+
+            <span className="hour-badge">
+              24 Hours
+            </span>
+
           </div>
-        </motion.section>
 
 
-        {/* Statistics */}
-        <section className="stats-grid">
+          <div className="input-grid">
 
-          <StatCard
-            title="Current Demand"
-            value="2.41"
-            unit="kW"
-            icon="⚡"
-          />
+            {energyValues.map(
+              (value, index) => (
 
-          <StatCard
-            title="Next Hour"
-            value="2.67"
-            unit="kW"
-            icon="🔮"
-          />
+                <div
+                  className="input-wrapper"
+                  key={index}
+                >
 
-          <StatCard
-            title="Forecast Horizon"
-            value="1"
-            unit="Hour"
-            icon="⏱️"
-          />
+                  <label>
+                    Hour {index + 1}
+                  </label>
 
-          <StatCard
-            title="Model"
-            value="LSTM"
-            unit=""
-            icon="🧠"
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    value={value}
+                    onChange={(e) =>
+                      handleInputChange(
+                        index,
+                        e.target.value
+                      )
+                    }
+                  />
+
+                </div>
+
+              )
+            )}
+
+          </div>
+
+
+          {error && (
+            <div className="error">
+              ⚠️ {error}
+            </div>
+          )}
+
+
+          <div className="actions">
+
+            <button
+              className="predict-button"
+              onClick={handlePredict}
+              disabled={loading}
+            >
+              {loading
+                ? "Predicting..."
+                : "⚡ Predict Next Hour"}
+            </button>
+
+
+            <button
+              className="clear-button"
+              onClick={handleClear}
+              disabled={loading}
+            >
+              Clear
+            </button>
+
+          </div>
+
+        </section>
+
+
+        {/* CHART */}
+
+        <section className="chart-section">
+
+          <EnergyChart
+            values={energyValues.filter(
+              (value) => value !== ""
+            )}
+            prediction={prediction}
           />
 
         </section>
 
 
-        {/* Chart */}
-        <motion.section
-          className="chart-section"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-        >
+        {/* RESULT */}
 
-          <div className="section-header">
+        {prediction !== null && (
 
-            <div>
-              <p className="section-label">
-                ENERGY CONSUMPTION
+          <section className="result-section">
+
+            <div className="result-heading">
+
+              <p>
+                FORECAST RESULT
               </p>
 
               <h2>
-                Actual vs Forecast
+                Next Hour Prediction
               </h2>
+
             </div>
 
-            <select>
-              <option>Last 24 Hours</option>
-              <option>Last 48 Hours</option>
-              <option>Last 7 Days</option>
-            </select>
+
+            <ForecastCard
+              prediction={prediction}
+            />
+
+
+            <div className="prediction-details">
+
+              <div>
+                <span>
+                  MODEL
+                </span>
+
+                <strong>
+                  LSTM
+                </strong>
+              </div>
+
+
+              <div>
+                <span>
+                  INPUT WINDOW
+                </span>
+
+                <strong>
+                  24 Hours
+                </strong>
+              </div>
+
+
+              <div>
+                <span>
+                  FORECAST
+                </span>
+
+                <strong>
+                  1 Hour
+                </strong>
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
+
+        {/* HOW IT WORKS */}
+
+        <section className="how-it-works">
+
+          <h2>
+            How It Works
+          </h2>
+
+
+          <div className="steps">
+
+            <div className="step-card">
+
+              <div className="step-number">
+                01
+              </div>
+
+              <h3>
+                Enter Data
+              </h3>
+
+              <p>
+                Provide the previous 24
+                hours of electricity
+                consumption.
+              </p>
+
+            </div>
+
+
+            <div className="step-card">
+
+              <div className="step-number">
+                02
+              </div>
+
+              <h3>
+                AI Analysis
+              </h3>
+
+              <p>
+                The LSTM model analyzes
+                the energy consumption
+                pattern.
+              </p>
+
+            </div>
+
+
+            <div className="step-card">
+
+              <div className="step-number">
+                03
+              </div>
+
+              <h3>
+                Get Forecast
+              </h3>
+
+              <p>
+                Receive the predicted
+                electricity consumption
+                for the next hour.
+              </p>
+
+            </div>
 
           </div>
 
-          <EnergyChart />
-
-        </motion.section>
-
-
-        {/* Forecast */}
-        <section className="bottom-grid">
-
-          <ForecastCard />
-
-          <motion.div
-            className="info-card"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-
-            <p className="section-label">
-              MODEL INFORMATION
-            </p>
-
-            <h2>LSTM Forecasting Engine</h2>
-
-            <div className="model-info">
-
-              <div>
-                <span>Input Window</span>
-                <strong>24 Hours</strong>
-              </div>
-
-              <div>
-                <span>Prediction</span>
-                <strong>Next Hour</strong>
-              </div>
-
-              <div>
-                <span>Frequency</span>
-                <strong>Hourly</strong>
-              </div>
-
-              <div>
-                <span>Target</span>
-                <strong>Active Power</strong>
-              </div>
-
-            </div>
-
-          </motion.div>
-
         </section>
+
+
+        {/* FOOTER */}
+
+        <footer className="footer">
+
+          Made with ❤️ by
+          <strong>
+            {" "}Shafique2606
+          </strong>
+
+        </footer>
 
       </main>
 
