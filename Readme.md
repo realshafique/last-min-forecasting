@@ -2,7 +2,7 @@
 
 ### AI-Powered Short-Term Electricity Consumption Forecasting
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-black?style=for-the-badge)](https://last-min-forecasting-co6l5ny6o-shafiqurrahman.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-black?style=for-the-badge)](https://last-min-forecasting.vercel.app/)
 [![Backend API](https://img.shields.io/badge/API-Render-blue?style=for-the-badge)](https://last-min-forecasting-1.onrender.com/)
 
 An end-to-end AI application that uses an LSTM deep learning model to forecast the next hour's electricity consumption from the previous 24 hours of energy usage.
