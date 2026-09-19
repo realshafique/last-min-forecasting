@@ -93,7 +93,7 @@ The frontend communicates with the FastAPI backend through the `/predict` endpoi
 - The system is designed as a short-term forecasting prototype.
 - Smart meter/IoT integration is not currently implemented.
 
-##🚀 Installation & Setup
+### 🚀 Installation & Setup
 
 Follow these steps to run Last Min Forecasting locally.
 
@@ -111,7 +111,7 @@ git clone https://github.com/realshafique/last-min-forecasting.git
 cd last-min-forecasting
 ```
 
-2. Create a Virtual Environment
+### 2. Create a Virtual Environment
 
 python -m venv venv
 
@@ -125,11 +125,11 @@ macOS/Linux:
 
 source venv/bin/activate
 
-3. Install Dependencies
+### 3. Install Dependencies
 
 pip install -r requirements.txt
 
-4. Prepare the Dataset
+### 4. Prepare the Dataset
 
 Place the required dataset in the project's data directory:
 
@@ -138,7 +138,7 @@ data/
 
 Make sure the dataset follows the format expected by the forecasting pipeline.
 
-5. Run the Model
+#### 5. Run the Model
 
 If the project contains a training script:
 
@@ -146,7 +146,7 @@ python train.py
 
 This will train the LSTM model using the available energy-consumption data.
 
-6. Start the Backend
+## 6. Start the Backend
 
 If FastAPI is used:
 
@@ -160,7 +160,7 @@ API documentation:
 
 http://127.0.0.1:8000/docs
 
-7. Start the Frontend
+## 7. Start the Frontend
 
 If Streamlit is used:
 
